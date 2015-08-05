@@ -1,0 +1,18 @@
+#' Get data from lm objects
+#' 
+#' simple extraction of data, returning useful errors if impossible. Useful as a 
+#' method for the generic `getData` from `nlme` package
+#' 
+#' @param object an object inheriting from class `lm`
+#' @export
+#' 
+
+getData.lm <- function(object) {
+  if (is.null(object$model)) {
+    warning("model structure does not include data. Attempting to get from environment")
+    eval(object$call$data, envir = attr(object$terms, ".Environment"))
+  }
+    
+  else
+  object$model
+}
