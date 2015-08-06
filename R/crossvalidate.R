@@ -22,7 +22,11 @@ crossvalidate.lm <- function(object, kfolds = 0, statistic = c("R2", "mse", "mae
   if(kfolds == 0) 
     kfolds <- nrow(data)
   curcall <- object$call
-  yname <- as.character(curcall$formula[[2]])
+  
+  yname <- object$yname # sneaky back door for objects of my own design
+  if(is.null(yname))
+    yname <- as.character(curcall$formula[[2]])
+  
   yvar <- var(data[[yname]])
   
   statistic = match.arg(statistic)
@@ -40,7 +44,7 @@ crossvalidate.lm <- function(object, kfolds = 0, statistic = c("R2", "mse", "mae
     curcall$data <- quote(train)
     curobj <- eval(curcall)
     
-    ypred <- predict(curobj, newdata = test)
+    ypred <- as.numeric(predict(curobj, newdata = test))
     ymeas <- test[[yname]]
     
     # fold.ss[fold] <- sum((ymeas - ypred)^2)

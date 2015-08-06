@@ -7,12 +7,15 @@
 #' @export
 #' 
 
+getData <- function(object) {
+  UseMethod("getData")
+}
+
 getData.lm <- function(object) {
   if (is.null(object$model)) {
     warning("model structure does not include data. Attempting to get from environment")
     eval(object$call$data, envir = attr(object$terms, ".Environment"))
   }
-    
   else
-  object$model
+    object$model
 }
