@@ -1,12 +1,12 @@
 Package: markstats
 Type: Package
-Title: What the package does (short line)
+Title: Miscellaneous statistical functions I (Mark) have written
 Version: 1.0
 Date: 2015-08-04
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Authors@R: person("Mark", "Hagemann", email = "mark.hagemann@gmail.com", role = c("aut", "cre"))
+Maintainer: Mark Hagemann <mark.hagemann@gmail.com>
+Description: Contains some of the functions I've written for past projects, which I'm adding as I need them. 
+License: GPL-3
 Suggests: testthat,
     nlme
 Imports: assertthat,
@@ -16,4 +16,3 @@ Imports: assertthat,
     hydroGOF,
     fitdistrplus,
     truncdist
-Depends: nlme
