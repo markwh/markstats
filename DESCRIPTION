@@ -13,5 +13,7 @@ Imports: assertthat,
     testthat,
     dplyr,
     nlme,
-    hydroGOF
+    hydroGOF,
+    fitdistrplus,
+    truncdist
 Depends: nlme

@@ -13,6 +13,8 @@ use_package("testthat")
 use_package("dplyr")
 # use_package("hydroGOF")
 use_package("nlme", type = "Suggests")
+use_package("fitdistrplus")
+use_package("truncdist")
 use_testthat()
 
 # datasets
