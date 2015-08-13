@@ -50,6 +50,9 @@ condlSample <- function(object, ...) {
 
 condlSample.lm <- function(object, newdata, quantile = "random", ...) {
   
+  if (missing(newdata))
+    newdata <- getData(object)
+  
   if (quantile == "random") 
     quantile = runif(nrow(newdata)) else quantile = rep_len(quantile, nrow(newdata))
     
