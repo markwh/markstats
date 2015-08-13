@@ -43,11 +43,12 @@ condlSample <- function(object, ...) {
 #' generating conditional distribution parameters. If omitted, the fitted values are used.
 #' @param quantile vector of quantiles to which the returned values will correspond.
 #' If the default, 'random' is not used, this must be numeric on (0, 1).
+#' @param ... Passed to `predict()` method
 #' @return Numeric vector containing conditional random sample (if `quantile = 'random'`)
 #' or conditional quantiles from condition distribution defined by `object` and `newdata`
 #' @export
 
-condlSample.lm <- function(object, newdata, quantile = "random") {
+condlSample.lm <- function(object, newdata, quantile = "random", ...) {
   
   if (quantile == "random") 
     quantile = runif(nrow(newdata)) else quantile = rep_len(quantile, nrow(newdata))
@@ -61,7 +62,7 @@ condlSample.lm <- function(object, newdata, quantile = "random") {
       stop("Specified distribution not available.")
     
     # get moments via predict
-    preds = as.data.frame(predict(object = object, newdata = newdata, se.fit = TRUE))
+    preds = as.data.frame(predict(object = object, newdata = newdata, se.fit = TRUE, ...))
     preds$var.pred = preds$se.fit^2 + var(residuals(object, type = "response"))
     names(preds)[1] = "fit"
     
