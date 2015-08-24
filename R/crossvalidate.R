@@ -19,9 +19,9 @@ crossvalidate <- function(object, ...) {
 crossvalidate.lm <- function(object, kfolds = 0, statistic = c("R2", "mse", "mae", "rmse")) {
   
   data <- getData(object)
+
   if(kfolds == 0) 
     kfolds <- nrow(data)
-  curcall <- object$call
   
   yname <- object$yname # sneaky back door for objects of my own design
   if(is.null(yname))
@@ -66,4 +66,21 @@ crossvalidate.lm <- function(object, kfolds = 0, statistic = c("R2", "mse", "mae
     sagg = 1 - ssum / sum((ymeas - mean(ymeas, na.rm = TRUE))^2)
   
   sagg
+}
+
+
+getMaker <- function(object) {
+  c1 = class(object)[1]
+  classes = c("lm", "glm", "gam", "rcgam")
+  functions = c("lm", "glm", "gam", "rcgam")
+  f <- functions[match(c1, classes)]
+  f
+}
+
+getMakerEnv <- function(object) {
+  c1 = class(object)[1]
+  classes = c("lm", "glm", "gam", "rcgam")
+  envs = c("stats", "stats", "gam", "rcgam")
+  env <- environment()
+  env
 }

@@ -7,7 +7,7 @@
 #' @export
 #' 
 
-getData <- function(object) {
+getData <- function(object, ...) {
   UseMethod("getData")
 }
 

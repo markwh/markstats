@@ -30,3 +30,6 @@ install()
 
 # test
 test()
+
+
+fixInNamespace("crossvalidate.lm", "markstats")
