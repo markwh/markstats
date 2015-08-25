@@ -25,6 +25,9 @@ fakedata <- data.frame(x1 = x1, x2 = x2, y = y)
 goodlm <- lm(y ~ x1 + x2, fakedata)
 use_data(goodlm, overwrite = TRUE)
 
+# document
+devtools::document()
+
 # load
 load_all()
 install()

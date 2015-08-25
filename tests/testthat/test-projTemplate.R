@@ -1,6 +1,6 @@
 context("projectTemplate functions")
 
-test_that("uncache works for different environments", {
+test_that("fromcache works for different environments", {
   isthere <- dir.exists("cache")
   if(!isthere) {
     dir.create("cache")
@@ -15,7 +15,7 @@ test_that("uncache works for different environments", {
   # test
 #   browser()
   expect_false(exists("foo", envir = parent.frame()))
-  uncache("foo")
+  fromcache("foo")
   expect_true(exists("foo", envir = parent.frame()))
   rm(foo)
   

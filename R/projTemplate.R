@@ -8,8 +8,9 @@
 #' @param variable character, the name of the variable to be retrieved.
 #' @param value None, used for side-effects only
 #' @seealso ProjectTemplate::cache
+#' @export
 
 
-uncache <- function(variable, envir = parent.frame()) {
+fromcache <- function(variable, envir = parent.frame()) {
   load(file.path("cache", paste0(variable, ".RData")), envir = envir)
 }
