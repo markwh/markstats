@@ -2,8 +2,11 @@
 
 S3method(condlSample,lm)
 S3method(crossvalidate,lm)
+S3method(hatvalues,gam)
 export(condlSample)
 export(crossvalidate)
 export(fromcache)
 export(getData)
 export(momentsToDistArgs)
+export(ocv)
+importFrom(stats,hatvalues)

@@ -12,6 +12,8 @@ test_that("crossvalidation returns reasonable numbers", {
 
 test_that("lm LOO crossvalidation agrees with press statistic", {
   data(goodlm)
+  fakedata = goodlm$model
+  goodlm <- eval(goodlm$call)
   expect_equal(crossvalidate(goodlm, statistic = "mse"), qpcR::PRESS(goodlm)$stat / nrow(goodlm$model))
   expect_equal(crossvalidate(goodlm), qpcR::PRESS(goodlm)$P.square)
 })

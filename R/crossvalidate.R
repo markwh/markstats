@@ -13,29 +13,54 @@ crossvalidate <- function(object, ...) {
   UseMethod("crossvalidate")
 }
 
+#' Ordinary Crossvalidation score
+#' Following Wood (2006), p. 173
+#' @param object a model object with methods for `residuals` and `hatvalues`.
+#' @export
+#' 
+ocv <- function(object) {
+  hat <- stats::hatvalues(goodlm)
+  denom <- (1 - hat)^2
+  ocv <- mean(residuals(object)^2 / denom)
+  ocv
+}
+
+#' @export
+#' @importFrom stats hatvalues
+hatvalues.gam <- function(object) {
+  object$hat
+}
+
 
 #' @export
 
 crossvalidate.lm <- function(object, kfolds = 0, statistic = c("R2", "mse", "mae", "rmse")) {
   
   data <- getData(object)
-
-  if(kfolds == 0) 
-    kfolds <- nrow(data)
-  
   yname <- object$yname # sneaky back door for objects of my own design
+  curcall <- object$call
   if(is.null(yname))
     yname <- as.character(curcall$formula[[2]])
-  
-  yvar <- var(data[[yname]])
-  
+  ymeas <- data[[yname]]
+
   statistic = match.arg(statistic)
   sfun = ifelse(statistic == "mae", "mae", "sse")
   
+  if(kfolds == 0) { # leave-one-out crossvalidation
+    if(statistic != "mae") {
+      mse <- ocv(object)
+      if (statistic == "mse")
+        return(mse)
+      else if (statistic == "rmse")
+        return(sqrt(mse))
+      else 
+        return = 1 - mse / sum((ymeas - mean(ymeas, na.rm = TRUE))^2)
+    }
+    kfolds <- nrow(data)
+  }
+  
   # split data into folds
   case.folds = sample(rep(1:kfolds, length.out = nrow(data)))
-  # fold.ss = rep(NA_real_, kfolds) # sum of squared residuals for each fold
-  # fold.mae = rep(NA_real_, kfolds) # mean absolute error for each fold
   fold.stat = rep(NA_real_, kfolds) # mean absolute error for each fold
   
   for (fold in 1:kfolds) {
@@ -46,13 +71,11 @@ crossvalidate.lm <- function(object, kfolds = 0, statistic = c("R2", "mse", "mae
     
     ypred <- as.numeric(predict(curobj, newdata = test))
     ymeas <- test[[yname]]
-    
-    # fold.ss[fold] <- sum((ymeas - ypred)^2)
+
     fold.stat[fold] <- do.call(sfun, list(ymeas, ypred))
   }
   
   # assemble folds 
-  # r2 <- 1 - sum(fold.ss) / sum((ymeas - mean(ymeas, na.rm = TRUE))^2)
   ymeas <- data[[yname]]
   ssum <- sum(fold.stat)
   
