@@ -16,6 +16,7 @@ use_package("nlme", type = "Suggests")
 use_package("ProjectTemplate", type = "Suggests")
 use_package("fitdistrplus")
 use_package("truncdist")
+use_package("rcmodel", type = "Suggests")
 use_testthat()
 
 # datasets

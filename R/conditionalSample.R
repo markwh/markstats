@@ -77,3 +77,43 @@ condlSample.lm <- function(object, newdata, quantile = "random", ...) {
     out = do.call(funname, c(list(p = quantile), args0))
     out
 }
+
+#' Predict method for rcgam fits
+#'
+#' Predict values using an rcgam model object
+#'
+#' @param object An rcgam object to use for predicting
+#' @param newdata a data.frame containing precictor variables to use for prediction
+#' @param retransform Should the predictions be returned as concentrations? (defaults to TRUE)
+#' @param ... Arguments passed to `predict.gam` function call
+#' @param smear Use Smearing estimator to correct transformation bias?
+#'
+#' @export
+condlSample.rcgam <- function(object, newdata, flowcol = "flow",
+                              flow.units = "CFS", quantile) {
+  
+  if (!requireNamespace("rcmodel", quietly = TRUE)) {
+    stop("rcmodel needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
+  # library("mgcv")
+  if (missing(newdata))
+    newdata = getData(object)
+  
+  assertthat::assert_that(is(newdata$Date, "Date"))
+  assertthat::assert_that(flowcol %in% names(newdata))
+  assertthat::assert_that("flow.units" %in% names(newdata))
+  assertthat::assert_that(all(as.character(newdata$flow.units) == object$units["qunits"]))
+  
+  newdata <- newdata %>%
+    mutate_(q = ~ object$transform$qtrans(newdata[[flowcol]]),
+            time = ~ as.numeric(Date) - as.numeric(object$stats["datebar"]),
+            doy = ~ as.numeric(format(Date, "%j")))
+  preds = NextMethod("condlSample", object = object, newdata = newdata,
+                     quantile = quantile, smear = FALSE, retransform = FALSE)
+  #   preds = condlSample.lm(object = object, newdata = newdata,
+  #                          quantile = quantile, smear = FALSE, retransform = FALSE)
+  preds = object$transform$cinvert(preds)
+  preds
+}
+

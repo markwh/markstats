@@ -9,7 +9,8 @@ Description: Contains some of the functions I've written for past projects, whic
 License: GPL-3
 Suggests: testthat,
     nlme,
-    ProjectTemplate
+    ProjectTemplate,
+    rcmodel
 Imports: assertthat,
     testthat,
     dplyr,
