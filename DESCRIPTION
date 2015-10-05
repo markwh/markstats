@@ -10,7 +10,8 @@ License: GPL-3
 Suggests: testthat,
     nlme,
     ProjectTemplate,
-    rcmodel
+    rcmodel,
+    ggplot2
 Imports: assertthat,
     testthat,
     dplyr,

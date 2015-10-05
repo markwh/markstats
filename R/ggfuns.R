@@ -8,11 +8,14 @@
 #' 
 
 ggTermPlot <- function(object, ...) {
+  if(!requireNamespace("ggplot2", quietly = TRUE)){
+    stop("ggplot2 must be installed for ggtermplot to work")
+  }
   UseMethod("ggTermPlot")
 }
 
 #' @export
-ggTermPlot.gam <- function(object, nrow = 1) {
+ggTermPlot.gam <- function(object, nrow = 1, ...) {
   dat = plot(object, pages = 1, residuals = TRUE)
   makeDf1 = function(elem) {
     df1 = data.frame(x = elem$x, y = elem$fit, what = "fit", xlab = elem$xlab)
@@ -24,10 +27,10 @@ ggTermPlot.gam <- function(object, nrow = 1) {
   }
   df1s = Reduce(rbind, lapply(dat, makeDf1))
   df2s = Reduce(rbind, lapply(dat, makeDf2))
-  out = ggplot() +
-    geom_line(data = df1s, aes(x = x, y = y)) +
-    geom_point(data = df2s, aes(x = x, y = y), color = 2) +
-    facet_wrap(~xlab, nrow = nrow, scales = "free_x", ...)
+  out = ggplot2::ggplot() +
+    ggplot2::geom_line(data = df1s, ggplot2::aes(x = x, y = y)) +
+    ggplot2::geom_point(data = df2s, ggplot2::aes(x = x, y = y), color = 2) +
+    ggplot2::facet_wrap(~xlab, nrow = nrow, scales = "free_x", ...)
   out
 }
 
