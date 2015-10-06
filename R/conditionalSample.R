@@ -90,7 +90,7 @@ condlSample.lm <- function(object, newdata, quantile = "random", ...) {
 #'
 #' @export
 condlSample.rcgam <- function(object, newdata, flowcol = "flow",
-                              flow.units = "CFS", quantile) {
+                              flow.units = "CFS", quantile, ...) {
   
   if (!requireNamespace("rcmodel", quietly = TRUE)) {
     stop("rcmodel needed for this function to work. Please install it.",
@@ -110,7 +110,8 @@ condlSample.rcgam <- function(object, newdata, flowcol = "flow",
             time = ~ as.numeric(Date) - as.numeric(object$stats["datebar"]),
             doy = ~ as.numeric(format(Date, "%j")))
   preds = NextMethod("condlSample", object = object, newdata = newdata,
-                     quantile = quantile, smear = FALSE, retransform = FALSE)
+                     quantile = quantile, smear = FALSE, retransform = FALSE, 
+                     ...)
   #   preds = condlSample.lm(object = object, newdata = newdata,
   #                          quantile = quantile, smear = FALSE, retransform = FALSE)
   preds = object$transform$cinvert(preds)

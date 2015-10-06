@@ -16,3 +16,20 @@ test_that("quantiles are as expected", {
   expect_less_than(sum(q90 < y), 150)
   expect_more_than(sum(q90 < y), 50)
 })
+
+# test_that("condlSample works with type = 'terms'", {
+#   expect_is()
+# })
+
+
+test_that("condlSample works for rcgam objects", {
+  data(Phosphorus, package = "rcmodel")
+  library(dplyr)
+  mod2 = rcmodel::rcgam(c ~ s(q) + s(doy, bs = "cc", k = 4) + s(time), 
+                        Phosphorus)
+  newdata = data.frame(Date = as.Date("1986-09-17"), conc = 0.1, 
+                       conc.units = "mg/l", flow = 10, 
+                       flow.units = "CFS", is.bdl = FALSE)
+  expect_is(condlSample(mod2, newdata = newdata, quantile = 0.9),
+            "numeric")
+})

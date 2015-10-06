@@ -5,16 +5,16 @@
 \title{Predict method for rcgam fits}
 \usage{
 \method{condlSample}{rcgam}(object, newdata, flowcol = "flow",
-  flow.units = "CFS", quantile)
+  flow.units = "CFS", quantile, ...)
 }
 \arguments{
 \item{object}{An rcgam object to use for predicting}
 
 \item{newdata}{a data.frame containing precictor variables to use for prediction}
 
-\item{retransform}{Should the predictions be returned as concentrations? (defaults to TRUE)}
-
 \item{...}{Arguments passed to `predict.gam` function call}
+
+\item{retransform}{Should the predictions be returned as concentrations? (defaults to TRUE)}
 
 \item{smear}{Use Smearing estimator to correct transformation bias?}
 }
