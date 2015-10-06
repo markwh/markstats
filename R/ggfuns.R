@@ -16,7 +16,10 @@ ggTermPlot <- function(object, ...) {
 
 #' @export
 ggTermPlot.gam <- function(object, nrow = 1, ...) {
+  png("tmp.png")
   dat = plot(object, pages = 1, residuals = TRUE)
+  dev.off()
+  file.remove("tmp.png")
   makeDf1 = function(elem) {
     df1 = data.frame(x = elem$x, y = elem$fit, what = "fit", xlab = elem$xlab)
     df1
