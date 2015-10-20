@@ -47,7 +47,7 @@ getData.rcgam <- function(object, type = c("raw", "rcData")) {
     object$data
   
   if(type == "raw")
-    out <- rcgam::makeRawData(out)
+    out <- rcmodel::makeRawData(out)
   out
 }
 

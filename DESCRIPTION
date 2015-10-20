@@ -19,3 +19,4 @@ Imports: assertthat,
     hydroGOF,
     fitdistrplus,
     truncdist
+Depends: dplyr

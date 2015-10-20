@@ -98,7 +98,7 @@ condlSample.rcgam <- function(object, newdata, flowcol = "flow",
   }
   # library("mgcv")
   if (missing(newdata))
-    newdata = rcmodel::getData.rcgam(object)
+    newdata = getData(object)
   
   assertthat::assert_that(is(newdata$Date, "Date"))
   assertthat::assert_that(flowcol %in% names(newdata))

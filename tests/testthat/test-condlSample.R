@@ -44,16 +44,21 @@ test_that("condlSample works for rcgam objects", {
 
 test_that("conditional samples are correct for rcgams", {
   data("rc_synth", package = "rcmodel")
+  data("Phosphorus", package = "rcmodel")
   mod1 = rcmodel::rcgam(c ~ s(q) + s(doy, bs = "cc", k = 4) + s(time), 
                         rc_synth)
-  q10 <- condlSample(mod1, quantile = 0.1)
-  q90 <- condlSample(mod1, quantile = 0.9)
+  mod2 = rcmodel::rcgam(c ~ s(q) + s(doy, bs = "cc", k = 4) + s(time), 
+                        Phosphorus)
+  n <- nrow(Phosphorus)
   
-  expect_less_than(mean(q10), mean(rc_synth$conc))
-  expect_more_than(mean(q90), mean(rc_synth$conc))
+  q10 <- condlSample(mod2, quantile = 0.1)
+  q90 <- condlSample(mod2, quantile = 0.9)
   
-  expect_less_than(sum(q10 > rc_synth$conc), 30)
-  expect_more_than(sum(q10 > rc_synth$conc), 19)
-  expect_less_than(sum(q90 < rc_synth$conc), 30)
-  expect_more_than(sum(q90 < rc_synth$conc), 19)
+  expect_less_than(mean(q10), mean(Phosphorus$conc))
+  expect_more_than(mean(q90), mean(Phosphorus$conc))
+  
+  expect_less_than(sum(q10 > Phosphorus$conc), n / 5)
+  expect_more_than(sum(q10 > Phosphorus$conc), n / 20)
+  expect_less_than(sum(q90 < Phosphorus$conc), n / 5)
+  expect_more_than(sum(q90 < Phosphorus$conc), n / 20)
 })
