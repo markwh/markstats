@@ -4,12 +4,7 @@
 \alias{R2}
 \title{coefficient of determination}
 \usage{
-R2(obs, pred)
-}
-\arguments{
-\item{obs}{observed data}
-
-\item{pred}{predictions}
+R2(x, ...)
 }
 \description{
 coefficient of determination

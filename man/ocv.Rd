@@ -3,7 +3,7 @@
 \name{ocv}
 \alias{ocv}
 \title{Ordinary Crossvalidation score
-Following Wood (2006), p. 173}
+Following Wood (2006), p. 174}
 \usage{
 ocv(object)
 }
@@ -12,6 +12,6 @@ ocv(object)
 }
 \description{
 Ordinary Crossvalidation score
-Following Wood (2006), p. 173
+Following Wood (2006), p. 174
 }
 
