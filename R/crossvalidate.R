@@ -14,15 +14,27 @@ crossvalidate <- function(object, ...) {
 }
 
 #' Ordinary Crossvalidation score
-#' Following Wood (2006), p. 173
+#' Following Wood (2006), p. 174
 #' @param object a model object with methods for `residuals` and `hatvalues`.
 #' @export
 #' 
 ocv <- function(object) {
   hat <- stats::hatvalues(object)
   denom <- (1 - hat)^2
-  ocv <- mean(residuals(object)^2 / denom)
+  ocv <- mean(residuals(object, type = "response")^2 / denom)
   ocv
+}
+
+#' Generalized Crossvalidation score
+#' Following Wood (2006), p. 178
+#' @param object a model object with methods for `deviance`, `residuals` and `hatvalues`.
+#' @export
+#' 
+gcv <- function(object) {
+  hat <- hatvalues(object)
+  n <- length(object$fitted.values)
+  out <- n * deviance(object) / (n - sum(hat))^2
+  out
 }
 
 #' @export
