@@ -62,3 +62,69 @@ subset.ggplot <- function(gg, subset, select, drop = FALSE) {
   gg[["data"]] = x[r, vars, drop = drop]
   gg
 }
+
+
+ 
+#' Creates 2-d filled contour plot for relative differences between two 
+#' data frames, each with 2 columns, "Date" and a numeric value.
+#' Series 1 is reference, to which series2 is compared.
+#' Value plotted is percent difference
+
+relDif = function(series1, series2, log = T){
+
+  require(caTools)
+  
+  daysOfInterest = c(1, 7, 14, 30, 60, 90, 180, 365)
+  base = 1.05
+  daysForLoad = base ^ (0:ceiling(log(365, base = base)))
+  
+  data = merge(series2, series1, by = "Date", all = F)
+  data$dif = data[,2] - data[,3]
+  outmat = matrix(nrow = 0, ncol = nrow(data))
+  for(i in daysForLoad){
+    avdif = runmean(data$dif, k = round(i), align = "center", endrule = "NA")
+    avload = runmean(data[,3], k = round(i), align = "center", endrule = "NA")
+    reldif = avdif / avload * 100
+    outmat = rbind(outmat, reldif)
+  } # get running mean for different window sizes
+  rownames(outmat) = daysForLoad
+  colnames(outmat) = data$Date
+  
+  date1 = data$Date[1]
+  date2 = data$Date[nrow(data)]
+  dates = seq.Date(date1, date2, by = "month")
+  
+  #   outmat[is.na(outmat)] = -110
+  #   cols = c("black", cm.colors(19), "red")
+  cols = c("black", rainbow(19), "black")
+  cols[11] = "lightgray"
+  allbreaks = c(-11:-1 * 10, 1:10 * 10, max(110, ceiling(max(outmat, na.rm = T))))
+  
+  par.old = par(no.readonly = T)
+  #   par(bg = "gray")
+  if(log){
+    # log plot
+    filled.contour(as.numeric(data$Date), log(daysForLoad), t(outmat), 
+                   levels = allbreaks, 
+                   xlab = "Date", ylab = "length of load time period (days)",
+                   col = cols, key.title = title(main = "percent\ndif."),
+                   plot.axes = { axis(1, at = as.numeric(dates), 
+                                      labels = format(dates, "%m/%Y"))
+                     axis(2, at = log(daysOfInterest), 
+                          labels = daysOfInterest) })
+    #                    plot.title = title(main = paste(series1, series2)))  
+  } else {
+    #linear plot
+    filled.contour(as.numeric(data$Date), daysForLoad, t(outmat), 
+                   levels = allbreaks, 
+                   xlab = "Date", ylab = "length of load time period (days)",
+                   col = cols, key.title = title(main = "percent\ndif."),
+                   plot.axes = { axis(1, at = as.numeric(dates),
+                                      labels = format(dates, "%m/%Y"))
+                     axis(2, at = daysOfInterest, 
+                          labels = daysOfInterest) })
+    #                    plot.title = title(main = paste(series1, series2)))  
+  }
+  par(par.old)
+  invisible(outmat)
+}
