@@ -70,8 +70,13 @@ subset.ggplot <- function(gg, subset, select, drop = FALSE) {
 #' Series 1 is reference, to which series2 is compared.
 #' Value plotted is percent difference
 
-relDif = function(series1, series2, log = T){
-
+relDif = function(series1, series2, log = T, breaks = NULL, cols = NULL){
+  # 
+  # Creates 2-d filled contour plot for relative differences between two 
+  #  data frames, each with 2 columns, "Date" and a numeric value.
+  #  Series 1 is reference, to which series2 is compared
+  #  Value plotted is percent difference
+  #
   require(caTools)
   
   daysOfInterest = c(1, 7, 14, 30, 60, 90, 180, 365)
@@ -96,9 +101,16 @@ relDif = function(series1, series2, log = T){
   
   #   outmat[is.na(outmat)] = -110
   #   cols = c("black", cm.colors(19), "red")
-  cols = c("black", rainbow(19), "black")
-  cols[11] = "lightgray"
-  allbreaks = c(-11:-1 * 10, 1:10 * 10, max(110, ceiling(max(outmat, na.rm = T))))
+  # cols = c("black", rainbow(19), "black")
+  if (is.null(cols)) {
+    cols <- c("black", rainbow(19), "black")
+    cols[11] = "lightgray"
+  }
+  if (is.null(breaks))
+    breaks <- c(-10:-1 * 10, 1:10 * 10)
+  stopifnot(all(breaks >= -100))
+  stopifnot(length(breaks) == length(cols) - 1)
+  allbreaks = c(-110, breaks, max(110, ceiling(max(outmat, na.rm = T))))
   
   par.old = par(no.readonly = T)
   #   par(bg = "gray")
