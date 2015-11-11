@@ -56,7 +56,7 @@ R2.gam <- function(x, adjust = FALSE) {
 Q2 <- function(object, method = c("gcv", "ocv")) {
   method = match.arg(method)
   mse <- ifelse(method == "gcv", gcv(object), ocv(object))
-  1 - length(object$fitted.values) * mse / tss_loo(object$fitted.values)
+  1 - length(object$y) * mse / tss_loo(object$y)
 }
 
 
