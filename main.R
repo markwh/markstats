@@ -10,7 +10,7 @@ library(dplyr)
 # setup
 use_package("assertthat")
 use_package("testthat")
-use_package("dplyr", type = "Depends")
+use_package("dplyr")
 # use_package("hydroGOF")
 use_package("nlme", type = "Suggests")
 use_package("ProjectTemplate", type = "Suggests")

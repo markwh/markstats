@@ -87,7 +87,7 @@ condlSample.lm <- function(object, newdata, quantile = "random", ...) {
 #' @param retransform Should the predictions be returned as concentrations? (defaults to TRUE)
 #' @param ... Arguments passed to `predict.gam` function call
 #' @param smear Use Smearing estimator to correct transformation bias?
-#'
+#' @importFrom dplyr "%>%" mutate_
 #' @export
 condlSample.rcgam <- function(object, newdata, flowcol = "flow",
                               flow.units = "CFS", quantile, ...) {
