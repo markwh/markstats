@@ -78,18 +78,18 @@ condlSample.lm <- function(object, newdata, quantile = "random", ...) {
     out
 }
 
-#' Predict method for rcgam fits
+#' Predict method for rclm/ rcgam fits
 #'
-#' Predict values using an rcgam model object
+#' Predict values using an rclm or rcgam model object
 #'
-#' @param object An rcgam object to use for predicting
+#' @param object An rclm or rcgam object to use for predicting
 #' @param newdata a data.frame containing precictor variables to use for prediction
 #' @param retransform Should the predictions be returned as concentrations? (defaults to TRUE)
-#' @param ... Arguments passed to `predict.gam` function call
+#' @param ... Arguments passed to `predict.lm` or predict.gam function call
 #' @param smear Use Smearing estimator to correct transformation bias?
 #' @importFrom dplyr "%>%" mutate_
 #' @export
-condlSample.rcgam <- function(object, newdata, flowcol = "flow",
+condlSample.rcmodel <- function(object, newdata, flowcol = "flow",
                               flow.units = "CFS", quantile, ...) {
   
   if (!requireNamespace("rcmodel", quietly = TRUE)) {
@@ -118,3 +118,22 @@ condlSample.rcgam <- function(object, newdata, flowcol = "flow",
   preds
 }
 
+
+#' @describeIn condlSample Method for rcgam objects
+#' @export
+condlSample.rcgam <- function(object, newdata, flowcol = "flow",
+                              flow.units = "CFS", quantile, ...) {
+  out = condlSample.rcmodel(object = object, newdata = newdata, flowcol = flowcol,
+                            flow.units = flow.units, quantil = quantile, ...)
+  out
+}
+
+
+#' @describeIn condlSample Method for rclm objects
+#' @export
+condlSample.rclm <- function(object, newdata, flowcol = "flow",
+                             flow.units = "CFS", quantile, ...) {
+  out = condlSample.rcmodel(object = object, newdata = newdata, flowcol = flowcol,
+                            flow.units = flow.units, quantil = quantile, ...)
+  out
+}

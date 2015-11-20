@@ -5,17 +5,21 @@ Version: 1.0
 Date: 2015-08-04
 Authors@R: person("Mark", "Hagemann", email = "mark.hagemann@gmail.com", role = c("aut", "cre"))
 Maintainer: Mark Hagemann <mark.hagemann@gmail.com>
-Description: Contains some of the functions I've written for past projects, which I'm adding as I need them. 
+Description: Contains some of the functions I've written for past projects,
+    which I'm adding as I need them.
 License: GPL-3
-Suggests: testthat,
+Suggests:
+    testthat,
     nlme,
     ProjectTemplate,
     rcmodel,
     ggplot2
-Imports: assertthat,
+Imports:
+    assertthat,
     testthat,
     dplyr,
     nlme,
     hydroGOF,
     fitdistrplus,
     truncdist
+RoxygenNote: 5.0.1
