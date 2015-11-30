@@ -21,6 +21,26 @@ condlSample(object, ...)
 `newdata` - to be passed to `predict()` function
 `quantile` - either 'random' for stochastic sampling from conditional distribution or 
 a numeric value on (0, 1) specifying the quantile to return}
+
+\item{newdata}{a data.frame containing precictor variables to use for prediction}
+
+\item{object}{An rclm or rcgam object to use for predicting}
+
+\item{retransform}{Should the predictions be returned as concentrations? (defaults to TRUE)}
+
+\item{...}{Arguments passed to `predict.lm` or predict.gam function call}
+
+\item{smear}{Use Smearing estimator to correct transformation bias?}
+
+\item{object}{An rclm or rcgam object to use for predicting}
+
+\item{newdata}{a data.frame containing precictor variables to use for prediction}
+
+\item{retransform}{Should the predictions be returned as concentrations? (defaults to TRUE)}
+
+\item{...}{Arguments passed to `predict.lm` or predict.gam function call}
+
+\item{smear}{Use Smearing estimator to correct transformation bias?}
 }
 \value{
 Numeric vector containing conditional random sample (if `quantile = 'random'`)
@@ -29,6 +49,10 @@ seealso \code{\link{condlSample.lm}}
 }
 \description{
 Generate samples from conditional distribution.
+
+Predict values using an rclm or rcgam model object
+
+Predict values using an rclm or rcgam model object
 }
 \section{Methods (by class)}{
 \itemize{
