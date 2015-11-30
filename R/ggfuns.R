@@ -16,6 +16,7 @@ ggTermPlot <- function(object, ...) {
 
 #' @export
 ggTermPlot.gam <- function(object, nrow = 1, ...) {
+  library(mgcv)
   png("tmp.png")
   dat = plot(object, pages = 1, residuals = TRUE)
   dev.off()
