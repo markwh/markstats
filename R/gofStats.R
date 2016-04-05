@@ -90,3 +90,17 @@ tss_loo <- function(x) {
   sum((x - omeans)^2)
 }
 
+
+
+# gam functions --------------------------------------------------------------
+
+#' @importFrom mgcv magic.post.proc
+#' @param X A model matrix, potentially with unobserved prediction values
+#' @param object a gam model
+
+hatvalues.gam <- function(object, X = NULL) {
+  if (is.null(X)) 
+    return(object$hat)
+  return(magic.post.proc(X = X, object = object)$hat)
+}
+
