@@ -15,7 +15,12 @@ ggTermPlot <- function(object, ...) {
 }
 
 #' @export
-ggTermPlot.gam <- function(object, nrow = 1, ...) {
+#' @importFrom ggplot2 ggplot geom_line geom_point facet_wrap aes
+#' Not ready for prime time. 
+ggTermPlot.gam <- function(object, nrow = 1, newdata = NULL, 
+                           ribbon = c("none", "fit", "pred", "both"), 
+                           p = 0.95, ...) {
+  ribbon = match.arg(ribbon)
   library(mgcv)
   png("tmp.png")
   dat = plot(object, pages = 1, residuals = TRUE)
@@ -31,10 +36,28 @@ ggTermPlot.gam <- function(object, nrow = 1, ...) {
   }
   df1s = Reduce(rbind, lapply(dat, makeDf1))
   df2s = Reduce(rbind, lapply(dat, makeDf2))
-  out = ggplot2::ggplot() +
-    ggplot2::geom_line(data = df1s, ggplot2::aes(x = x, y = y)) +
-    ggplot2::geom_point(data = df2s, ggplot2::aes(x = x, y = y), color = 2) +
-    ggplot2::facet_wrap(~xlab, nrow = nrow, scales = "free_x", ...)
+  out = ggplot() +
+    geom_line(data = df1s, aes(x = x, y = y)) +
+    geom_point(data = df2s, aes(x = x, y = y), color = 2) +
+    facet_wrap(~xlab, nrow = nrow, scales = "free_x", ...)
+  
+  if (!is.null(newdata)) {
+    newpred <- predict(object = object, newdata = newdata, type = "iterms")
+    newdf1 <- newpred$fit %>% 
+      as.data.frame %>% 
+      melt() %>% 
+      mutate(what = "fit")
+    
+    newdf2 <- newpred$se.fit %>% 
+      as.data.frame %>% 
+      melt() %>% 
+      mutate(what = "se.fit")
+    
+    newdf <- rbind(newdf1, newdf2) %>% 
+      dcast(variable ~ what)
+    out = out + geom_pointrange(data = newpred, aes(x = ))
+  }
+  
   out
 }
 
