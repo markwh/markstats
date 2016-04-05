@@ -1,63 +1,22 @@
 # Functions for ggplot2. 
 
 
-#' Termplot function for regression models
-#' Currently only supports gam objects. 
-#' @param ... Passed to facet_wrap
+#' ggplot2 implementation of termplot with partial residuals, using visreg::visreg()
+#' @param object A model object that visreg() recognizes
+#' @param xvar Which term to inspect. Currently only works for one at a time.
+#' @param data If object$call$data isn't in the model environment, it can be supplied using this
+#' @importFrom visreg visreg
 #' @export
-#' 
-
-ggTermPlot <- function(object, ...) {
-  if(!requireNamespace("ggplot2", quietly = TRUE)){
-    stop("ggplot2 must be installed for ggtermplot to work")
-  }
-  UseMethod("ggTermPlot")
-}
-
-#' @export
-#' @importFrom ggplot2 ggplot geom_line geom_point facet_wrap aes
-#' Not ready for prime time. 
-ggTermPlot.gam <- function(object, nrow = 1, newdata = NULL, 
-                           ribbon = c("none", "fit", "pred", "both"), 
-                           p = 0.95, ...) {
-  ribbon = match.arg(ribbon)
-  library(mgcv)
-  png("tmp.png")
-  dat = plot(object, pages = 1, residuals = TRUE)
-  dev.off()
-  file.remove("tmp.png")
-  makeDf1 = function(elem) {
-    df1 = data.frame(x = elem$x, y = elem$fit, what = "fit", xlab = elem$xlab)
-    df1
-  }
-  makeDf2 = function(elem){
-    df2 = data.frame(x = elem$raw, y = elem$p.resid, what = "p.resid", xlab = elem$xlab)
-    df2
-  }
-  df1s = Reduce(rbind, lapply(dat, makeDf1))
-  df2s = Reduce(rbind, lapply(dat, makeDf2))
-  out = ggplot() +
-    geom_line(data = df1s, aes(x = x, y = y)) +
-    geom_point(data = df2s, aes(x = x, y = y), color = 2) +
-    facet_wrap(~xlab, nrow = nrow, scales = "free_x", ...)
+ggTermPlot <- function(object, xvar, data = NULL, ...) {
+  if (!is.null(data))
+    object$call$data <- as.name("data")
+  vis = visreg(object, xvar = xvar, plot = FALSE, ...)
   
-  if (!is.null(newdata)) {
-    newpred <- predict(object = object, newdata = newdata, type = "iterms")
-    newdf1 <- newpred$fit %>% 
-      as.data.frame %>% 
-      melt() %>% 
-      mutate(what = "fit")
-    
-    newdf2 <- newpred$se.fit %>% 
-      as.data.frame %>% 
-      melt() %>% 
-      mutate(what = "se.fit")
-    
-    newdf <- rbind(newdf1, newdf2) %>% 
-      dcast(variable ~ what)
-    out = out + geom_pointrange(data = newpred, aes(x = ))
-  }
-  
+  out <- ggplot(data = vis$fit) + 
+    geom_ribbon(aes_(x = as.name(xvar), ymin = ~visregLwr, ymax = ~visregUpr), 
+                alpha = 0.5) +
+    geom_line(aes_(x = as.name(xvar), y = ~visregFit)) + 
+    geom_point(aes_(x = as.name(xvar), y = ~visregRes), data = vis$res)
   out
 }
 
@@ -163,4 +122,128 @@ relDif = function(series1, series2, log = T, breaks = NULL, cols = NULL){
   }
   par(par.old)
   invisible(outmat)
+}
+
+
+# Multivariate sampling and plotting functions ----------------------------
+
+
+#' Add points corresponding to a multivariate normal sample
+#' @param mvsample a data.frame returned by mvSample()
+#' @param ... Arguments passed to geom_point
+#' @importFrom ggplot2 geom_point
+#' @export
+ggMvSample <- function(mvsample, ...) {
+  geom_point(data = mvsample, aes(x = x, y = y), ...)
+}
+
+#' Returns a data.frame with points sampled according to a covariance matrix
+#' Only works for 2-D data
+#' @param sigma a 2x2 covariance matrix
+#' @param if not "none" (the default), uses a quasi-random sampling method
+#' @param ... other arguments passed to halton() or sobol() (if quasi != "none")
+#' @importFrom randtoolbox halton sobol
+#' @importFrom magrittr `%>%`
+#' @export
+mvSample <- function(sigma, n, quasi = c("none", "halton", "sobol"), ...) {
+  
+  stopifnot(nrow(sigma) == 2 && ncol(sigma) == 2)
+  eigs <- eigen(sigma)
+  stopifnot(all(eigs$values > 0))
+  quasi <- match.arg(quasi)
+  
+  if(quasi == "halton") {
+    mv1 <- halton(n = n, dim = 2, normal = TRUE, ...)
+    mvdat <- mv1 %*% chol(sigma) %>% 
+      as.data.frame() %>% 
+      setNames(c("x", "y"))
+  }
+  if(quasi == "sobol") {
+    mv1 <- sobol(n = n, dim = 2, normal = TRUE, ...)
+    mvdat <- mv1 %*% chol(sigma) %>% 
+      as.data.frame() %>% 
+      setNames(c("x", "y"))
+  }
+  if(quasi == "none") {
+    mvdat <- rmvnorm(n = n, sigma = sigma) %>% 
+      as.data.frame() %>% 
+      setNames(c("x", "y"))
+  }
+  mvdat
+}
+
+#' Returns a data.frame with points sampled along first pincipal component of a covariance matrix
+#' Only works for 2-D data
+#' @param sigma a 2x2 covariance matrix
+#' @param n number of points in sample
+#' @param if not "none" (the default), uses a quasi-random sampling method
+#' @importFrom randtoolbox halton sobol
+#' @importFrom magrittr `%>%`
+eigSample <- function(sigma, n, quasi = c("none", "halton", "sobol"), ...) {
+  
+  stopifnot(nrow(sigma) == 2 && ncol(sigma) == 2)
+  eigs <- eigen(sigma)
+  stopifnot(all(eigs$values > 0))
+  quasi <- match.arg(quasi)
+  
+  if(quasi == "halton") {
+    mv1 <- halton(n = n, dim = 1, normal = TRUE, ...)
+  }
+  if(quasi == "sobol") {
+    mv1 <- sobol(n = n, dim = 1, normal = TRUE, ...)
+  }
+  if(quasi == "none") {
+    mv1 <- rnorm(n = n)
+  }
+  
+  mvdat <- mv1 %>% 
+    as.data.frame()
+  out <- sampleToPCs(mvdat, sigma = sigma) %>% 
+    as.data.frame() %>% 
+    setNames(c("x", "y"))
+  out
+}
+
+#' Project observations from a sample to principal components, given a covariance matrix
+#' @param x A data.frame, typically a (quasi-) random sample from MVN(0, I)
+sampleToPCs <- function(x, sigma) {
+  eigs <- eigen(sigma)
+  stopifnot(all(eigs$values > 0))
+  dim <- ncol(x)
+  stopifnot(dim <= ncol(sigma))
+  lambdas <- eigs$values[1:dim]
+  vmat <- eigs$vectors[, 1:dim]
+  
+  out <- as.matrix(x) %*% diag(sqrt(lambdas), nr = dim, nc = dim) %*% t(vmat)
+  out
+}
+
+#' Returns a geom_segment object with principal components shown
+#' @param pclines a data.frame returned by pcLines function
+#' @param ... Arguments passed to geom_line
+#' @importFrom ggplot2 geom_segment
+ggPcLines <- function(pclines, ...) {
+  geom_segment(data = pclines, aes(x = x_1, y = y_1, xend = x_2, yend = y_2), ...)
+}
+
+#' Returns a data.frame with endpoints of principal components.
+#' Only works for 2-D data
+#' @param pclines a data.frame returned by pcLines function
+pcLines <- function(sigma) {
+  stopifnot(nrow(sigma) == 2 && ncol(sigma) == 2)
+  eigs <- eigen(sigma)
+  stopifnot(all(eigs$values > 0))
+  
+  segends <- with(eigs, Map(`*`, as.data.frame(vectors), 2 *sqrt(values))) %>% 
+    as.data.frame() %>% 
+    t() %>% 
+    as.data.frame() %>% 
+    setNames(c("x", "y")) %>% 
+    mutate(endpoint = -0.5, pc = c(1, 2)) %>% 
+    bind_rows(-I(.)) %>% 
+    mutate(endpoint = endpoint + 1.5, 
+           pc = abs(pc)) %>%
+    melt(id.vars = c("endpoint", "pc")) %>% 
+    dcast(pc ~ variable + endpoint)
+  segends
 }

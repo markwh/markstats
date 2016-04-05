@@ -18,6 +18,7 @@ use_package("ggplot2", type = "Suggests")
 use_package("fitdistrplus")
 use_package("truncdist")
 use_package("rcmodel", type = "Suggests")
+use_package("visreg")
 use_testthat()
 
 # datasets

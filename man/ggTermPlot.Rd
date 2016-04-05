@@ -2,16 +2,18 @@
 % Please edit documentation in R/ggfuns.R
 \name{ggTermPlot}
 \alias{ggTermPlot}
-\title{Termplot function for regression models
-Currently only supports gam objects.}
+\title{ggplot2 implementation of termplot with partial residuals, using visreg::visreg()}
 \usage{
-ggTermPlot(object, ...)
+ggTermPlot(object, xvar, data = NULL, ...)
 }
 \arguments{
-\item{...}{Passed to facet_wrap}
+\item{object}{A model object that visreg() recognizes}
+
+\item{xvar}{Which term to inspect. Currently only works for one at a time.}
+
+\item{data}{If object$call$data isn't in the model environment, it can be supplied using this}
 }
 \description{
-Termplot function for regression models
-Currently only supports gam objects.
+ggplot2 implementation of termplot with partial residuals, using visreg::visreg()
 }
 
