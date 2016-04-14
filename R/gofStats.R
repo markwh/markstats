@@ -104,3 +104,49 @@ hatvalues.gam <- function(object, X = NULL) {
   return(magic.post.proc(X = X, object = object)$hat)
 }
 
+#' Studentized deleted residuals, given a model object
+#' @param object a model object that undertstands `residuals` and `hatvalues`
+#' @export
+rstudent.gam <- function(object, ...) {
+  r <- delResid(object)
+  s <- sqrt(delMSE(object) / (1 - hatvalues(object)))
+  out <- r / s
+  out
+}
+
+#' Deleted residuals, given a model object
+#' @param object a model object that undertstands `residuals` and `hatvalues`
+#' @export
+delResid <- function(object) {
+  residuals(object = object, type = "response") / (1 - hatvalues(object))
+}
+
+#' Mean-squared error for a model
+#' @param model a model object that understands `residuals`
+#' @export
+MSE <- function(model) {
+  errs <- residuals(model, type = "response")
+  out <- sum(errs^2) / model$df.residual
+  out
+}
+
+#' Deleted MSE
+#' Useful for calculating deleted statistics like dffits, studentized deleted residuals
+#' @param model object, e.g. lm or gam
+#' @export
+delMSE <- function(model) {
+  n_p <- model$df.residual
+  errs <- residuals(model, type = "response")
+  numer <- MSE(model) * n_p - errs^2 / (1 - hatvalues(model))
+  out <- numer / (n_p - 1)
+  out
+}
+
+#' DFFITS for a given model
+#' @export
+dffits.gam <- function(model) {
+  numer <- delResid(model) - residuals(model, type = "response")
+  out <- numer / sqrt(delMSE(model) * hatvalues(model))
+  out
+}
+

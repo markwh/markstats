@@ -143,7 +143,7 @@ ggMvSample <- function(mvsample, ...) {
 #' @param if not "none" (the default), uses a quasi-random sampling method
 #' @param ... other arguments passed to halton() or sobol() (if quasi != "none")
 #' @importFrom randtoolbox halton sobol
-#' @importFrom magrittr `%>%`
+#' @importFrom magrittr "%>%"
 #' @export
 mvSample <- function(sigma, n, quasi = c("none", "halton", "sobol"), ...) {
   
@@ -178,7 +178,7 @@ mvSample <- function(sigma, n, quasi = c("none", "halton", "sobol"), ...) {
 #' @param n number of points in sample
 #' @param if not "none" (the default), uses a quasi-random sampling method
 #' @importFrom randtoolbox halton sobol
-#' @importFrom magrittr `%>%`
+#' @importFrom magrittr "%>%"
 eigSample <- function(sigma, n, quasi = c("none", "halton", "sobol"), ...) {
   
   stopifnot(nrow(sigma) == 2 && ncol(sigma) == 2)
