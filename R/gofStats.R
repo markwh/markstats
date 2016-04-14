@@ -94,6 +94,7 @@ tss_loo <- function(x) {
 
 # gam functions --------------------------------------------------------------
 
+#' Diagonals of GAM influence matrix 
 #' @importFrom mgcv magic.post.proc
 #' @param X A model matrix, potentially with unobserved prediction values
 #' @param object a gam model
@@ -106,6 +107,7 @@ hatvalues.gam <- function(object, X = NULL) {
 
 #' Studentized deleted residuals, given a model object
 #' @param object a model object that undertstands `residuals` and `hatvalues`
+#' @importFrom stats rstudent
 #' @export
 rstudent.gam <- function(object, ...) {
   r <- delResid(object)

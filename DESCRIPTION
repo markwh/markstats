@@ -1,7 +1,7 @@
 Package: markstats
 Type: Package
 Title: Miscellaneous statistical functions I (Mark) have written
-Version: 1.0
+Version: 1.0.0.9000
 Date: 2015-08-04
 Authors@R: person("Mark", "Hagemann", email = "mark.hagemann@gmail.com", role = c("aut", "cre"))
 Maintainer: Mark Hagemann <mark.hagemann@gmail.com>
@@ -9,11 +9,8 @@ Description: Contains some of the functions I've written for past projects,
     which I'm adding as I need them.
 License: GPL-3
 Suggests:
-    testthat,
-    nlme,
     ProjectTemplate,
-    rcmodel,
-    ggplot2
+    rcmodel
 Imports:
     assertthat,
     testthat,
@@ -22,5 +19,9 @@ Imports:
     hydroGOF,
     fitdistrplus,
     truncdist,
-    visreg
+    visreg,
+    ggplot2,
+    magrittr,
+    mgcv,
+    randtoolbox
 RoxygenNote: 5.0.1

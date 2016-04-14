@@ -2,6 +2,7 @@
 % Please edit documentation in R/gofStats.R
 \name{hatvalues.gam}
 \alias{hatvalues.gam}
+\title{Diagonals of GAM influence matrix}
 \usage{
 \method{hatvalues}{gam}(object, X = NULL)
 }
@@ -9,5 +10,8 @@
 \item{object}{a gam model}
 
 \item{X}{A model matrix, potentially with unobserved prediction values}
+}
+\description{
+Diagonals of GAM influence matrix
 }
 

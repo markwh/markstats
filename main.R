@@ -14,7 +14,10 @@ use_package("dplyr")
 # use_package("hydroGOF")
 use_package("nlme", type = "Suggests")
 use_package("ProjectTemplate", type = "Suggests")
-use_package("ggplot2", type = "Suggests")
+use_package("ggplot2")
+use_package("magrittr")
+use_package("mgcv")
+use_package("randtoolbox")
 use_package("fitdistrplus")
 use_package("truncdist")
 use_package("rcmodel", type = "Suggests")
@@ -42,6 +45,5 @@ install()
 # test
 test()
 
-devtools::install_github("markwh/rcmodel")
-
-fixInNamespace("crossvalidate.lm", "markstats")
+# Check
+check()

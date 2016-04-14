@@ -6,6 +6,7 @@
 #' @param xvar Which term to inspect. Currently only works for one at a time.
 #' @param data If object$call$data isn't in the model environment, it can be supplied using this
 #' @importFrom visreg visreg
+#' @importFrom ggplot2 ggplot geom_ribbon geom_line geom_point aes_
 #' @export
 ggTermPlot <- function(object, xvar, data = NULL, ...) {
   if (!is.null(data))
@@ -214,7 +215,7 @@ sampleToPCs <- function(x, sigma) {
   lambdas <- eigs$values[1:dim]
   vmat <- eigs$vectors[, 1:dim]
   
-  out <- as.matrix(x) %*% diag(sqrt(lambdas), nr = dim, nc = dim) %*% t(vmat)
+  out <- as.matrix(x) %*% diag(sqrt(lambdas), nrow = dim, ncol = dim) %*% t(vmat)
   out
 }
 
