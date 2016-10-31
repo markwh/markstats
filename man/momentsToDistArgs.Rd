@@ -8,7 +8,7 @@ momentsToDistArgs(distr, moments)
 }
 \arguments{
 \item{distr}{character. A distribution R recognizes (currently only supports
-'norm', 'gamma', 'poisson')}
+'norm', 'gamma', 'poisson', 'beta')}
 
 \item{moments}{a numeric vector, matrix, or data.frame with mean as column 1,
 variance as column 2, etc. Currently only first 2 moments are used.}

@@ -3,7 +3,7 @@
 #' Returns a list of distribution parameters for R distribution calls.
 #'
 #' @param distr character. A distribution R recognizes (currently only supports
-#' 'norm', 'gamma', 'poisson')
+#' 'norm', 'gamma', 'poisson', 'beta')
 #' @param moments a numeric vector, matrix, or data.frame with mean as column 1,
 #' variance as column 2, etc. Currently only first 2 moments are used.
 #' @return list of distribution parameters for R param calls.
@@ -15,7 +15,9 @@ momentsToDistArgs = function(distr, moments) {
   moments = as.matrix(moments)
   switch(distr, norm = list(mean = moments[, 1], sd = sqrt(moments[, 2])), 
          gamma = list(shape = moments[, 1]^2/moments[, 2], scale = moments[, 2]/moments[, 1]), 
-         pois = list(lambda = moments[, 1]))
+         pois = list(lambda = moments[, 1]),
+         beta = list(a = moments[1] * (moments[1] * (1 - moments[1]) / moments[2] - 1),
+                     b = (1 - moments[1]) * (moments[1] * (1 - moments[1]) / moments[2] - 1)))
 }
 
 
