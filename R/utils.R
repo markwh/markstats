@@ -22,3 +22,10 @@ titleCase <- function(text) {
   out <- gsub(re_from, "\\U\\1\\L\\2" , text, perl=TRUE)
   out
 }
+
+
+#' Wrapper for summary(as.factor(x))
+#' @export
+
+facsum <- function(x) 
+  summary(as.factor(x))
