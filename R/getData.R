@@ -12,6 +12,7 @@ getData <- function(object, ...) {
   UseMethod("getData")
 }
 
+#' @export
 getData.lm <- function(object) {
   if (is.null(object$model)) {
     message("model structure does not include data. Attempting to get from environment")
