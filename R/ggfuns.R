@@ -8,7 +8,12 @@
 #' @importFrom visreg visreg
 #' @importFrom ggplot2 ggplot geom_ribbon geom_line geom_point aes_
 #' @export
-ggTermPlot <- function(object, xvar, data = NULL, ...) {
+ggTermPlot <- function(object, ...) {
+  UseMethod("ggTermPlot")
+}
+
+#' @export
+ggTermPlot.lm <- function(object, xvar, data = NULL, ...) {
   if (!is.null(data))
     object$call$data <- as.name("data")
   vis = visreg(object, xvar = xvar, plot = FALSE, ...)

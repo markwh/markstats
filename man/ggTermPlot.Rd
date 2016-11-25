@@ -4,7 +4,7 @@
 \alias{ggTermPlot}
 \title{ggplot2 implementation of termplot with partial residuals, using visreg::visreg()}
 \usage{
-ggTermPlot(object, xvar, data = NULL, ...)
+ggTermPlot(object, ...)
 }
 \arguments{
 \item{object}{A model object that visreg() recognizes}

@@ -6,8 +6,8 @@ test_that("crossvalidation returns reasonable numbers", {
   expect_equal(crossvalidate(goodlm, kfolds = 0, "mse"), 
                crossvalidate(goodlm, kfolds = 0, "rmse")^2)
   
-  expect_less_than(crossvalidate(goodlm, kfolds = 0, "R2"), 1)
-  expect_less_than(crossvalidate(goodlm, kfolds = 3, "R2"), 1)
+  expect_lt(crossvalidate(goodlm, kfolds = 0, "R2"), 1)
+  expect_lt(crossvalidate(goodlm, kfolds = 3, "R2"), 1)
 })
 
 test_that("lm LOO crossvalidation agrees with press statistic", {

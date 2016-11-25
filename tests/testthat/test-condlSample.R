@@ -10,11 +10,11 @@ test_that("quantiles are as expected", {
   q10 = condlSample(lmxy, quantile = 0.1)
   q90 = condlSample(lmxy, quantile = 0.9)
   
-  expect_less_than(sum(q10 > y), 150)
-  expect_more_than(sum(q10 > y), 50)
+  expect_lt(sum(q10 > y), 150)
+  expect_gt(sum(q10 > y), 50)
   
-  expect_less_than(sum(q90 < y), 150)
-  expect_more_than(sum(q90 < y), 50)
+  expect_lt(sum(q90 < y), 150)
+  expect_gt(sum(q90 < y), 50)
 })
 
 # test_that("condlSample works with type = 'terms'", {

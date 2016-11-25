@@ -14,7 +14,7 @@ getData <- function(object, ...) {
 
 getData.lm <- function(object) {
   if (is.null(object$model)) {
-    warning("model structure does not include data. Attempting to get from environment")
+    message("model structure does not include data. Attempting to get from environment")
     eval(object$call$data, envir = attr(object$terms, ".Environment"))
   }
   else
