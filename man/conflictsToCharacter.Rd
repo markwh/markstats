@@ -19,4 +19,3 @@ conflictsToCharacter(df1, df2, addMissing = TRUE, verbose = FALSE)
 Converts conflicted column types to character columns and rbinds the result. 
 If one data.frame is missing columns, they are created and populated by NA's.
 }
-

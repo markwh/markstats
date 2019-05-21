@@ -12,4 +12,3 @@ sampleToPCs(x, sigma)
 \description{
 Project observations from a sample to principal components, given a covariance matrix
 }
-

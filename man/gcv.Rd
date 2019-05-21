@@ -14,4 +14,3 @@ gcv(object)
 Generalized Crossvalidation score
 Following Wood (2006), p. 178
 }
-

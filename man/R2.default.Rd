@@ -14,4 +14,3 @@
 \description{
 Default S3 method for coefficient of determination
 }
-

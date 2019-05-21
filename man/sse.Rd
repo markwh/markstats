@@ -14,4 +14,3 @@ sse(obs, pred)
 \description{
 sum of squared errors
 }
-

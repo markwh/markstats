@@ -14,4 +14,3 @@ Optionally gives adjusted R2.}
 Coefficient of dermination for gam objects
 Optionally gives adjusted R2.
 }
-

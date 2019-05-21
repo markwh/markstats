@@ -16,4 +16,3 @@ method for the generic `getData` from `nlme` package
 \seealso{
 getData.rcgam
 }
-

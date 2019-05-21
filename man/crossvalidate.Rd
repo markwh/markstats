@@ -16,4 +16,3 @@ crossvalidate(object, ...)
 \description{
 Generic function that computes a crossvalidation score for regression models.
 }
-

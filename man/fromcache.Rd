@@ -23,4 +23,3 @@ character string), retrieves that object from the cache directory.
 \seealso{
 ProjectTemplate::cache
 }
-

@@ -14,4 +14,3 @@ ggMvSample(mvsample, ...)
 \description{
 Add points corresponding to a multivariate normal sample
 }
-

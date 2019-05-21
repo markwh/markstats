@@ -12,4 +12,3 @@
 \description{
 Studentized deleted residuals, given a model object
 }
-

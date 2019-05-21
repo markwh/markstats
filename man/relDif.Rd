@@ -15,4 +15,3 @@ data frames, each with 2 columns, "Date" and a numeric value.
 Series 1 is reference, to which series2 is compared.
 Value plotted is percent difference
 }
-

@@ -9,4 +9,3 @@ facsum(x)
 \description{
 Wrapper for summary(as.factor(x))
 }
-

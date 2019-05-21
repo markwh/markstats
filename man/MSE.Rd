@@ -12,4 +12,3 @@ MSE(model)
 \description{
 Mean-squared error for a model
 }
-

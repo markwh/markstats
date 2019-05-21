@@ -14,4 +14,3 @@ Optionally gives adjusted R2.}
 Coefficient of dermination for lm objects
 Optionally gives adjusted R2.
 }
-

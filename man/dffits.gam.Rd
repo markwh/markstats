@@ -9,4 +9,3 @@ dffits.gam(model)
 \description{
 DFFITS for a given model
 }
-

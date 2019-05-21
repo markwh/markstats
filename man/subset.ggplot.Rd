@@ -9,4 +9,3 @@
 \description{
 Subsets a ggplot object by applying subset.data.frame code to gg$data
 }
-

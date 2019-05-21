@@ -14,4 +14,3 @@ ggPcLines(pclines, ...)
 \description{
 Returns a geom_segment object with principal components shown
 }
-

@@ -14,4 +14,3 @@ ocv(object)
 Ordinary Crossvalidation score
 Following Wood (2006), p. 174
 }
-

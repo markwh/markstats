@@ -11,4 +11,3 @@ titleCase(text)
 Capitalize first letter of each word in text
 Copied without shame from http://stackoverflow.com/a/15776815
 }
-

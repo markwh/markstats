@@ -11,4 +11,3 @@ tss_loo(x)
 leave-one-out sum of squares
 useful for calculating Q2
 }
-

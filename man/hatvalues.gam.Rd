@@ -14,4 +14,3 @@
 \description{
 Diagonals of GAM influence matrix
 }
-

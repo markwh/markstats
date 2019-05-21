@@ -16,4 +16,3 @@ Leave-one-out coefficient of determination
 Similar to R2, but uses leave-one-out estimates for response and mean. 
 Uses GCV and OCV to estimate MSE of prediction.
 }
-

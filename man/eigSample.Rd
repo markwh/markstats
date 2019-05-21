@@ -18,4 +18,3 @@ eigSample(sigma, n, quasi = c("none", "halton", "sobol"), ...)
 Returns a data.frame with points sampled along first pincipal component of a covariance matrix
 Only works for 2-D data
 }
-

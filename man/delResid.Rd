@@ -12,4 +12,3 @@ delResid(object)
 \description{
 Deleted residuals, given a model object
 }
-

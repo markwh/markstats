@@ -18,4 +18,3 @@ splitPiece(strvec, split, piece, ...)
 \description{
 Get all of the pieces for a particular stringsplit.
 }
-

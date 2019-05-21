@@ -12,4 +12,3 @@ bind_rows2(dfList, addMissing = TRUE, verbose = FALSE)
 \description{
 A better (but slower) version of dplyr::bind_rows
 }
-

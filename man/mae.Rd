@@ -14,4 +14,3 @@ mae(obs, pred)
 \description{
 mean absolute error
 }
-

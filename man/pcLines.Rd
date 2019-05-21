@@ -14,4 +14,3 @@ pcLines(sigma)
 Returns a data.frame with endpoints of principal components.
 Only works for 2-D data
 }
-

@@ -14,4 +14,3 @@ delMSE(model)
 Deleted MSE
 Useful for calculating deleted statistics like dffits, studentized deleted residuals
 }
-

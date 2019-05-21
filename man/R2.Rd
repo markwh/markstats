@@ -9,4 +9,3 @@ R2(x, ...)
 \description{
 coefficient of determination
 }
-

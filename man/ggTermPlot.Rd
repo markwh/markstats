@@ -16,4 +16,3 @@ ggTermPlot(object, ...)
 \description{
 ggplot2 implementation of termplot with partial residuals, using visreg::visreg()
 }
-
